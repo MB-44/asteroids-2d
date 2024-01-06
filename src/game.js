@@ -18,10 +18,8 @@ class Player {
     draw() {
         c.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2, false);
         c.fillStyle = "red";
-        c.fill();
+        c.fill();``
 
-        // c.fillStyle = "red";
-        // c.fillRect(this.position.x, this.position.y, 100, 100);
         c.moveTo(this.position.x + 30, this.position.y);
         c.lineTo(this.position.x - 10, this.position.y - 10);
         c.lineTo(this.position.x - 10, this.position.y + 10);
@@ -39,4 +37,21 @@ const player = new Player({
 
 player.draw();
 
-console.log(player);
+// player movement
+function animate() {
+    window.requestAnimationFrame(animate);
+}
+
+window.addEventListener('keydown', (event) => {
+    switch (event.code) {
+        case 'ArrowUp':
+            break
+        case 'ArrowDown':
+            break
+        case 'ArrowLeft':
+            break
+        case 'ArrowRight':
+            break
+    }
+});
+
