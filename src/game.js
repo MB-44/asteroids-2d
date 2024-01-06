@@ -65,6 +65,10 @@ const keys = {
     }
 }
 
+const SPEED = 3;
+const ROTATIONAL_SPEED = 0.05;
+const FRICTION = 0.97;
+
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = "black";
@@ -72,15 +76,16 @@ function animate() {
 
     player.update()
 
-    player.velocity.x = 0;
-    player.velocity.y = 0;
     if (keys.ArrowUp.pressed) {
-        player.velocity.x = Math.cos(player.rotation);
-        player.velocity.y = Math.sin(player.rotation);
+        player.velocity.x = Math.cos(player.rotation) * SPEED;
+        player.velocity.y = Math.sin(player.rotation) * SPEED;
+    } else if (!keys.ArrowUp.pressed) {
+        player.velocity.x *= FRICTION;
+        player.velocity.y *= FRICTION;
     }
 
-    if (keys.ArrowRight.pressed) player.rotation += 0.03;
-    else if (keys.ArrowLeft.pressed) player.rotation -= 0.03;
+    if (keys.ArrowRight.pressed) player.rotation += ROTATIONAL_SPEED;
+    else if (keys.ArrowLeft.pressed) player.rotation -= ROTATIONAL_SPEED;
 }
 
 animate();
