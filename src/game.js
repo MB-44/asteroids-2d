@@ -14,11 +14,14 @@ class Player {
     }
 
     draw() {
-        c.save()
-        c.rotate()
+        c.save();
+        c.translate(this.position.x, this.position.y);
+        c.rotate(this.rotation);
+        c.translate(-this.position.x, -this.position.y);
+
         c.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2, false);
         c.fillStyle = "red";
-        c.fill();``
+        c.fill();
 
         c.beginPath();
         c.moveTo(this.position.x + 30, this.position.y);
@@ -62,7 +65,6 @@ const keys = {
     }
 }
 
-
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = "black";
@@ -71,9 +73,14 @@ function animate() {
     player.update()
 
     player.velocity.x = 0;
-    if (keys.ArrowUp.pressed) player.velocity.x = 1;
+    player.velocity.y = 0;
+    if (keys.ArrowUp.pressed) {
+        player.velocity.x = Math.cos(player.rotation);
+        player.velocity.y = Math.sin(player.rotation);
+    }
 
-    if (keys.ArrowRight.pressed) player.rotation += 0.01;
+    if (keys.ArrowRight.pressed) player.rotation += 0.03;
+    else if (keys.ArrowLeft.pressed) player.rotation -= 0.03;
 }
 
 animate();
