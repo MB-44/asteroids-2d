@@ -1,4 +1,4 @@
-# Asteroids-2D game
+# Asteroids-2D game 🛸🛰🌠
 
 This is a basic 2D game created using only JavaScript. It's a simple project to help you understand the fundamentals of game development using web technologies. This repository containes the source code for that game.
 
