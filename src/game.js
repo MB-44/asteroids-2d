@@ -63,8 +63,6 @@ class Projectile {
     }
 }
 
-
-
 const player = new Player({
     position: { x: canvas.width / 2, y: canvas.height / 2 },
     velocity: { x: 0, y: 0}
@@ -91,6 +89,7 @@ const keys = {
 const SPEED = 3;
 const ROTATIONAL_SPEED = 0.05;
 const FRICTION = 0.97;
+const PROJECTILE_SPEED = 3;
 
 const projectiles = []
 
@@ -104,6 +103,16 @@ function animate() {
     for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i];
         projectile.update();
+
+        // garbage collection for projectiles;
+        if (
+            projectile.position.x + projectile.radius < 0 || 
+            projectile.position.x - projectile.position.radius > canvas.width || 
+            projectile.position.y - projectile.radius > canvas.height ||
+            projectile.position.y + projectile.radius < 0 
+        ) {
+            projectiles.splice(i,1);
+        }
     }
 
     if (keys.ArrowUp.pressed) {
@@ -141,12 +150,12 @@ window.addEventListener('keydown', (event) => {
                     y: player.position.y + Math.sin(player.rotation) * 30,
                 },
                 velocity: {
-                    x: 1, y: 0
+                    x: Math.cos(player.rotation) * PROJECTILE_SPEED, 
+                    y: Math.sin(player.rotation) * PROJECTILE_SPEED,
                 }
             }))
     }
 });
-
 
 window.addEventListener('keyup', (event) => {
     switch (event.code) {
