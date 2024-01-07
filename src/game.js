@@ -41,6 +41,29 @@ class Player {
     }
 }
 
+class Projectile {
+    constructor({position, velocity}) {
+        this.position = position;
+        this.velocity = velocity;
+        this.radius = 5;
+    }
+
+    draw() {
+        c.beginPath();
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false);
+        c.closePath();
+        c.fillStyle = "white";
+        c.fill();
+    }
+
+    update() {
+        this.draw();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+    }
+}
+
+
 
 const player = new Player({
     position: { x: canvas.width / 2, y: canvas.height / 2 },
@@ -48,8 +71,8 @@ const player = new Player({
 });
 
 
-// player movement
 
+// player movement
 const keys = {
     ArrowUp : {
         pressed: false
@@ -69,12 +92,19 @@ const SPEED = 3;
 const ROTATIONAL_SPEED = 0.05;
 const FRICTION = 0.97;
 
+const projectiles = []
+
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = "black";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     player.update()
+
+    for (let i = projectiles.length - 1; i >= 0; i--) {
+        const projectile = projectiles[i];
+        projectile.update();
+    }
 
     if (keys.ArrowUp.pressed) {
         player.velocity.x = Math.cos(player.rotation) * SPEED;
@@ -104,6 +134,16 @@ window.addEventListener('keydown', (event) => {
         case 'ArrowRight':
             keys.ArrowRight.pressed = true;    
             break
+        case 'Space':
+            projectiles.push(new Projectile({
+                position: {
+                    x: player.position.x + Math.cos(player.rotation) * 30,
+                    y: player.position.y + Math.sin(player.rotation) * 30,
+                },
+                velocity: {
+                    x: 1, y: 0
+                }
+            }))
     }
 });
 
