@@ -63,11 +63,32 @@ class Projectile {
     }
 }
 
+class Asteroid {
+    constructor({position, velocity}) {
+        this.position = position;
+        this.velocity = velocity;
+        this.radius = 50 * Math.random() + 10;
+    }
+
+    draw() {
+        c.beginPath();
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false);
+        c.closePath();
+        c.strokeStyle = "white";
+        c.stroke();
+    }
+
+    update() {
+        this.draw();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+    }
+}
+
 const player = new Player({
     position: { x: canvas.width / 2, y: canvas.height / 2 },
     velocity: { x: 0, y: 0}
 });
-
 
 
 // player movement
@@ -92,6 +113,24 @@ const FRICTION = 0.97;
 const PROJECTILE_SPEED = 3;
 
 const projectiles = []
+const asteroids = []
+
+// asteroids
+window.setInterval(() => {
+    asteroids.push(
+        new Asteroid({
+            position: {
+                x: 0,
+                y: 0,
+            },
+            velocity: {
+                x: 1,
+                y: 0,
+            },
+        }
+    ))
+}, 3000);
+
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -100,6 +139,7 @@ function animate() {
 
     player.update()
 
+    
     for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i];
         projectile.update();
@@ -113,6 +153,13 @@ function animate() {
         ) {
             projectiles.splice(i,1);
         }
+    }
+
+    // asteroid management
+    for (let i = asteroids.length - 1; i >= 0; i--) {
+        const asteroids = asteroids[i];
+        asteroids.update();
+        
     }
 
     if (keys.ArrowUp.pressed) {
