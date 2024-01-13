@@ -116,7 +116,7 @@ const projectiles = []
 const asteroids = []
 
 // asteroids
-window.setInterval(() => {
+window.setInterval(() => { 
     asteroids.push(
         new Asteroid({
             position: {
@@ -157,9 +157,8 @@ function animate() {
 
     // asteroid management
     for (let i = asteroids.length - 1; i >= 0; i--) {
-        const asteroids = asteroids[i];
-        asteroids.update();
-        
+        const asteroid = asteroids[i];
+        asteroid.update();   
     }
 
     if (keys.ArrowUp.pressed) {
